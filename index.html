@@ -47,10 +47,12 @@
     var player1 = new Player();
     player1.x = 40;
     player1.y = 458;
+    player1.color = "red";
 
     var player2 = new Player();
     player2.x = 1050;
     player2.y = 50;
+    player2.color = "blue";
 
     var level = new Level();
 
@@ -62,6 +64,7 @@
   	  
       requestAnimationFrame(desenha);
       //al.play("background");
+      
       atual = new Date();
       dt = (atual - anterior)/1000;
       ctx.clearRect(0,0,eCanvas.width, eCanvas.height);
@@ -73,56 +76,65 @@
       ctx.fillText("Player 1: " + level.lifeP1, 10, 20);
       ctx.fillText("Player 2: " + level.lifeP2, 970, 20)
 
-      player1.colidiuCenario(ctx);
+      if(level.victory(ctx, al, "victory")){    
 
-      player1.desenhar(ctx);
+        player1.colidiuCenario(ctx);
+
+        player1.desenhar(ctx);
 
       //player1.desenharImg(ctx, il.images["player1"]);
 
-      player2.colidiuCenario(ctx);
+        player2.colidiuCenario(ctx);
 
-      player2.desenhar(ctx);
+        player2.desenhar(ctx);
 
       //player2.desenharImg(ctx, il.images["player2"]);
 
-      level.desenhar(ctx);
+        level.desenhar(ctx);
 
-      level.desenharImg(ctx, il);
+        level.desenharImg(ctx, il);
 
-      anterior = atual;
+        anterior = atual;
 
-      player1.mover(dt);
-      player2.mover(dt);
+        player1.mover(dt);
+        player2.mover(dt);
 
-      level.colidiuComTudo(player1, al,"boom", function(cenario, alvo){
-        player1.x = 40;
-        player1.y = 458;
-      });
+        level.colidiuComTudo(player1, al,"boom", function(cenario, alvo){
+          player1.x = 40;
+          player1.y = 458;
+          level.lifeP1--;
+          player2.x = 1050;
+          player2.y = 50;
+        });
 
-      level.colidiuComTudo(player2, al,"boom", function(cenario, alvo){
-        player2.x = 1050;
-        player2.y = 50;
-      });
+        level.colidiuComTudo(player2, al,"boom", function(cenario, alvo){
+          player1.x = 40;
+          player1.y = 458;
+          player2.x = 1050;
+          player2.y = 50;
+          level.lifeP2--;
+        });
 
-      level.colidiuComP1(player1, al,"boom", function(cenario, alvo){
-        player1.x = 40;
-        player1.y = 458;
-        level.lifeP1--;
-        player2.x = 1050;
-        player2.y = 50;
-      });
+        level.colidiuComP1(player1, al,"boom", function(cenario, alvo){
+          player1.x = 40;
+          player1.y = 458;
+          level.lifeP1--;
+          player2.x = 1050;
+          player2.y = 50;
+        });
 
-      level.colidiuComP2(player2, al,"boom", function(shot, alvo){
-        player1.x = 40;
-        player1.y = 458;
-        player2.x = 1050;
-        player2.y = 50;
-        level.lifeP2--;
-      });
+        level.colidiuComP2(player2, al,"boom", function(shot, alvo){
+          player1.x = 40;
+          player1.y = 458;
+          player2.x = 1050;
+          player2.y = 50;
+          level.lifeP2--;
+        });
 
-      level.colidiuComTiros(al, "boom");
+        level.colidiuComTiros(al, "boom");
 
-      level.mover(dt);
+        level.mover(dt);
+    } 
 
       // level.colidiuCom(player,
       //     function(inimigo, alvo){
@@ -146,42 +158,52 @@
           case 13:
             if(level.playerLife(ctx))
               level.fire(player2, al, "shot", 0.5);
+            e.preventDefault();
             break;
           case 32:
             if(level.playerLife(ctx))
               level.fire(player1, al, "shot", 0.5);
+            e.preventDefault();
             break;
           case 37:
             player1.vx = -100;
             player1.vy = 0;
+            e.preventDefault();
             break;
           case 38:
             player1.vx = 0;
             player1.vy = -100;
+            e.preventDefault();
             break;
           case 39:
             player1.vx = +100;
             player1.vy = 0;
+            e.preventDefault();
             break;
           case 40:
             player1.vx = 0;
             player1.vy = 100;
+            e.preventDefault();
             break;
           case 65:
             player2.vx = -100;
             player2.vy = 0;
+            e.preventDefault();
             break;
           case 68:
             player2.vx = 100;
             player2.vy = 0;
+            e.preventDefault();
             break;
           case 83:
             player2.vx = 0;
             player2.vy = 100;
+            e.preventDefault();
             break;
           case 87:
             player2.vx = 0;
             player2.vy = -100;
+            e.preventDefault();
             break;
           default:
 

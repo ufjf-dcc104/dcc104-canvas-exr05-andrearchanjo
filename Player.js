@@ -5,6 +5,8 @@ function Player(){
   this.vy = 0
   this.ax = 0;
   this.ay = 0;
+  this.angle = 0;
+  this.vang = 0;
   this.width = 32;
   this.height = 32;
   this.angle = 0;
@@ -16,7 +18,7 @@ Player.prototype.desenhar = function (ctx) {
   ctx.save();
   ctx.translate(this.x, this.y);
   ctx.rotate(this.angle*2*Math.PI/360);
-  ctx.fillStyle = "black";
+  ctx.fillStyle = this.color;
   ctx.fillRect(-this.width/2, -this.height/2, this.width, this.height);
   ctx.fill();
   ctx.strokeStyle = "black";
@@ -44,6 +46,7 @@ Player.prototype.mover = function (dt) {
     this.x = this.x + this.vx*dt;
     this.vy = this.vy + this.ay*dt;
     this.y = this.y + this.vy*dt;
+    this.angle = this.angle + this.vang*dt;
   }
   this.vy = this.vy + this.ay*dt;
   this.y = this.y + this.vy*dt;
@@ -71,10 +74,10 @@ Player.prototype.colidiuCenario = function (ctx) {
   }
 };
 
-Player.prototype.colidiuCom = function (inimigo) {
-  if(this.x+this.width < inimigo.x) return false;
-  if(this.x > inimigo.x+this.width) return false;
-  if(this.y+this.height < inimigo.y) return false;
-  if(this.y > inimigo.y+this.height) return false;
+Player.prototype.colidiuCom = function (alvo) {
+  if(this.x + this.width/2 < alvo.x-alvo.width/2)   return false;  // colisão pela esquerda
+  if(this.x-this.width/2 > alvo.x + alvo.width/2)   return false;  // colisão pela direita
+  if(this.y + this.height/2 < alvo.y-alvo.height/2)  return false;  //  colisão por cima
+  if(this.y-this.height/2 > alvo.y + alvo.height/2)  return false;  // colisão por baixo
   return true;
 };

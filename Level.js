@@ -135,17 +135,17 @@ Level.prototype.fire = function (alvo, audiolib, key, vol){
   if(alvo.cooldown>0 || (alvo.vx == 0 && alvo.vy == 0)) return;
   var tiro = new Player();
   if(alvo.vx > 0){
-    tiro.x = alvo.x + 20;
+    tiro.x = alvo.x + 30;
     tiro.y = alvo.y;
   } else if (alvo.vy > 0) {
     tiro.x = alvo.x;
-    tiro.y = alvo.y + 20;
+    tiro.y = alvo.y + 30;
   } else if (alvo.vx < 0) {
-    tiro.x = alvo.x - 20;
+    tiro.x = alvo.x - 30;
     tiro.y = alvo.y;
   } else if (alvo.vy < 0) {
     tiro.x = alvo.x;
-    tiro.y = alvo.y  - 20;
+    tiro.y = alvo.y  - 30;
   }
   tiro.vx = alvo.vx;
   tiro.vy = alvo.vy;
@@ -248,12 +248,22 @@ Level.prototype.colidiuComPlayer2 = function(player, al, key){
   }
 };
 
-Level.prototype.playerLife = function(ctx, al = null, key = null){
+Level.prototype.playerLife = function(){
   if (this.lifeP1 > 0 && this.lifeP2 > 0) {
     return true;
   } else if( this.lifeP1 <= 0) {
+    return false;
+  } else {
+    return false;
+  }
+};
+
+Level.prototype.victory = function(ctx, al = null, key = null){
+  if (this.lifeP1 > 0 && this.lifeP2 > 0) {
+    return true;
+  } else if(this.lifeP1 <= 0) {
     this.message = "Player2 Venceu!";
-    ctx.fillText(this.message, 180, 240);
+    ctx.fillText(this.message, 450, 240);
     if(this.music&&al&&key) { 
       al.play(key)
       this.music = false;
@@ -261,22 +271,12 @@ Level.prototype.playerLife = function(ctx, al = null, key = null){
     return false;
   } else {
     this.message = "Player1 Venceu!";
-    ctx.fillText(this.message, 180, 240);
+    ctx.fillText(this.message, 450, 240);
     if(this.music&&al&&key) { 
       al.play(key)
       this.music = false;
     }
     return false;
   }
-};
-
-Level.prototype.victory = function(ctx, al = null, key = null){
-    this.inimigos = [];
-    this.message = "Você venceu!";
-    ctx.fillText(this.message, 180, 240);
-    if(this.music&&al&&key) { 
-      al.play(key)
-      this.music = false;
-    }
 }
 

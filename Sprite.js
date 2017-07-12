@@ -19,7 +19,7 @@ Sprite.prototype.desenhar = function (ctx) {
   ctx.save();
   ctx.translate(this.x, this.y);
   ctx.rotate(this.angle*2*Math.PI/360);
-  ctx.fillStyle = "black";
+  ctx.fillStyle = this.color;
   ctx.fillRect(-this.width/2, -this.height/2, this.width, this.height);
   ctx.fill();
   ctx.strokeStyle = "black";
